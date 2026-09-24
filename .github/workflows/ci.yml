@@ -46,6 +46,8 @@ jobs:
           cache: "pnpm"
       - name: Restore dependencies
         run: pnpm install --frozen-lockfile --offline
+      - name: Build workspace outputs
+        run: pnpm build
       - name: Run typecheck
         run: pnpm typecheck
 

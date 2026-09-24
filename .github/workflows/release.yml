@@ -33,11 +33,11 @@ jobs:
           node-version: '20'
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm build
       - run: pnpm typecheck
-      - run: pnpm lint
       - run: pnpm test
       - run: pnpm test:security
-      - run: pnpm build
+      - run: pnpm lint
 
   macos:
     name: Build macOS Apple Silicon
