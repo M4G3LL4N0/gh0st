@@ -1,0 +1,62 @@
+{
+  "name": "gh0st",
+  "version": "1.0.0",
+  "description": "Private AI client — local-first, encrypted, xAI-powered",
+  "private": true,
+  "scripts": {
+    "dev:client": "pnpm --filter=@gh0st/client dev",
+    "dev:cli": "pnpm --filter=@gh0st/cli dev",
+    "dev:site": "pnpm --filter=@gh0st/site dev",
+    "build": "pnpm -r build",
+    "build:client": "pnpm --filter=@gh0st/client build",
+    "build:cli": "pnpm --filter=@gh0st/cli build",
+    "build:site": "pnpm --filter=@gh0st/site build",
+    "test": "pnpm -r test",
+    "test:unit": "pnpm -r test:unit",
+    "test:security": "pnpm -r test:security",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm -r lint",
+    "setup": "bash ./setup.sh",
+    "verify": "pnpm typecheck && pnpm build && pnpm test",
+    "tauri:dev": "pnpm --filter=@gh0st/client tauri dev",
+    "tauri:build": "pnpm --filter=@gh0st/client tauri build",
+    "mac:dev": "pnpm tauri:dev",
+    "mac:build": "pnpm tauri:build --bundles app",
+    "mac:dmg": "pnpm tauri:build --bundles dmg",
+    "ios:init": "cd apps/client/src-tauri && cargo tauri ios init",
+    "ios:dev": "cd apps/client/src-tauri && cargo tauri ios dev",
+    "ios:build": "cd apps/client/src-tauri && cargo tauri ios build",
+    "db:push": "pnpm --filter=@gh0st/storage db:push",
+    "db:studio": "pnpm --filter=@gh0st/storage db:studio",
+    "prepare": "pnpm -r prepare"
+  },
+  "devDependencies": {
+    "@types/marked-terminal": "^6.1.1",
+    "@types/node": "^20.14.0",
+    "@typescript-eslint/eslint-plugin": "^8.70.1",
+    "@typescript-eslint/parser": "^8.70.1",
+    "eslint": "^9.0.0",
+    "eslint-plugin-import": "^2.32.0",
+    "prettier": "^3.3.0",
+    "tsx": "^4.15.0",
+    "typescript": "^5.5.0",
+    "vite-plugin-dts": "^5.1.1",
+    "vitest": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "dependencies": {
+    "idb": "^8.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "marked": "^11.2.0"
+    }
+  }
+}

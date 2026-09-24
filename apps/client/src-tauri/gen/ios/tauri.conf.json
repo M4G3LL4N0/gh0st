@@ -1,0 +1,90 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "gh0st",
+  "version": "1.0.0",
+  "identifier": "dev.gh0st",
+  "build": {
+    "beforeBuildCommand": "pnpm build",
+    "beforeDevCommand": "pnpm dev",
+    "devUrl": "http://localhost:1420"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "gh0st",
+        "width": 1100,
+        "height": 750,
+        "minWidth": 800,
+        "minHeight": 600,
+        "center": true,
+        "visible": false,
+        "resizable": true,
+        "decorations": true,
+        "titleBarStyle": "Visible",
+        "focus": true
+      }
+    ],
+    "security": {
+      "csp": null,
+      "freezePrototype": false
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "resources": [],
+    "externalBin": [],
+    "copyright": "MIT License",
+    "category": "DeveloperTool",
+    "shortDescription": "Private AI client",
+    "longDescription": "gh0st - Private AI client. Local-first, encrypted, xAI-powered.",
+    "macOS": {
+      "minimumSystemVersion": "13.0",
+      "exceptionDomain": "",
+      "signingIdentity": "",
+      "providerShortName": "gh0st",
+      "entitlements": "entitlements.plist"
+    },
+    "windows": {
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper"
+      }
+    },
+    "iOS": {
+      "minimumSystemVersion": "16.0",
+      "deviceCapabilities": ["arm64"],
+      "requiresFullScreen": true,
+      "supportedOrientations": ["portrait", "landscape"],
+      "requiresNativeWindow": true,
+      "icon": {
+        "path": "icons/128x128.png",
+        "generated": true
+      }
+    }
+  },
+  "plugins": {
+    "stronghold": {
+      "password": ""
+    },
+    "dialog": {},
+    "fs": {
+      "scope": ["$APPDATA/gh0st/*", "$HOME/.gh0st/*"]
+    },
+    "notification": {},
+    "globalShortcut": {},
+    "clipboard": {},
+    "shell": {
+      "open": true
+    },
+    "windowState": {},
+    "opener": {}
+  }
+}

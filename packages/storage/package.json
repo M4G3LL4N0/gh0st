@@ -1,0 +1,36 @@
+{
+  "name": "@gh0st/storage",
+  "version": "1.0.0",
+  "description": "Storage interfaces and implementations for gh0st",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest run --passWithNoTests",
+    "test:unit": "vitest run --passWithNoTests --reporter=verbose",
+    "lint": "eslint src --ext .ts",
+    "typecheck": "tsc --noEmit",
+    "db:push": "node scripts/db-push.js",
+    "db:studio": "node scripts/db-studio.js"
+  },
+  "dependencies": {
+    "@gh0st/core": "workspace:*",
+    "@gh0st/security": "workspace:*",
+    "dexie": "^4.0.0",
+    "idb": "^8.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  }
+}
