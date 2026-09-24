@@ -1,6 +1,6 @@
 {
   "name": "@gh0st/storage",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.1",
   "description": "Storage interfaces and implementations for gh0st",
   "type": "module",
   "main": "./dist/index.js",

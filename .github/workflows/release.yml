@@ -1,202 +1,132 @@
 name: Release
 
 on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to create or update
+        required: true
+        type: string
+      prerelease:
+        description: Mark the GitHub release as a prerelease
+        required: true
+        default: true
+        type: boolean
   push:
     tags:
-      - "v*"
+      - 'v*'
 
 permissions:
   contents: write
 
 jobs:
-  # Pre-release checks
-  pre-release:
-    name: Pre-release Checks
+  checks:
+    name: Release checks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@v4
         with:
           version: 9
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: "pnpm"
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-      - name: Typecheck
-        run: pnpm typecheck
-      - name: Lint
-        run: pnpm lint
-      - name: Test
-        run: pnpm test
-      - name: Security Test
-        run: pnpm test:security
-      - name: Build all
-        run: pnpm build
+          node-version: '20'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm test
+      - run: pnpm test:security
+      - run: pnpm build
 
-  # Create release with web, CLI, site builds
-  release:
-    name: Create GitHub Release
-    runs-on: ubuntu-latest
-    needs: pre-release
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 9
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "pnpm"
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-      - name: Build all
-        run: pnpm build
-      - name: Generate changelog
-        id: changelog
-        run: |
-          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
-          if [ -n "$PREV_TAG" ]; then
-            git log ${PREV_TAG}..HEAD --pretty=format:"- %s (%h)" --reverse > CHANGELOG_GENERATED.md
-          else
-            echo "No previous tag" > CHANGELOG_GENERATED.md
-          fi
-          echo "changelog<<EOF" >> $GITHUB_OUTPUT
-          cat CHANGELOG_GENERATED.md >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            apps/client/dist/**/*
-            apps/cli/dist/**/*
-            apps/site/dist/**/*
-          generate_release_notes: true
-          body_path: CHANGELOG_GENERATED.md
-          draft: false
-          prerelease: ${{ contains(github.ref, '-rc') || contains(github.ref, '-beta') || contains(github.ref, '-alpha') }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # Build macOS with Tauri Action (ad-hoc signed)
-  build-macos:
-    name: Build macOS (Apple Silicon)
+  macos:
+    name: Build macOS Apple Silicon
     runs-on: macos-latest
-    needs: pre-release
+    needs: checks
     steps:
       - uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v3
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
         with:
           version: 9
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: "pnpm"
-      - name: Cache Rust dependencies
-        uses: Swatinem/rust-cache@v2
+          node-version: '20'
+          cache: pnpm
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin
+      - uses: Swatinem/rust-cache@v2
         with:
           key: ${{ runner.os }}-cargo-${{ hashFiles('apps/client/src-tauri/Cargo.lock') }}
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-      - name: Build macOS with Tauri
-        uses: tauri-apps/tauri-action@v0
+      - run: pnpm install --frozen-lockfile
+      - uses: tauri-apps/tauri-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAURI_PRIVATE_API: "true"
         with:
-          tagName: ${{ github.ref_name }}
-          releaseName: "gh0st ${{ github.ref_name }} - macOS"
+          projectPath: apps/client
+          tauriScript: pnpm tauri
+          tagName: ${{ inputs.tag || github.ref_name }}
+          releaseName: gh0st ${{ inputs.tag || github.ref_name }}
           releaseBody: |
-            ## macOS Release
+            First public release candidate for gh0st.
 
-            ### Download
-            - [gh0st-${{ github.ref_name }}-aarch64.dmg]({{ github.repository }}/releases/download/${{ github.ref_name }}/gh0st-${{ github.ref_name }}-aarch64.dmg) (Apple Silicon)
-            - [gh0st-${{ github.ref_name }}-aarch64.app.tar.gz]({{ github.repository }}/releases/download/${{ github.ref_name }}/gh0st-${{ github.ref_name }}-aarch64.app.tar.gz) (Apple Silicon)
+            Available:
+            - macOS Apple Silicon DMG and app archive
+            - Local CLI workflow
+            - Local browser UI
+            - Encrypted local conversations, files, agents, and preferences
+            - xAI Responses API integration with `store=false`
+            - ZDR-aware runtime verification when enabled for the user's xAI team
+            - Web, X, Code, and optional MCP tools
 
-            ### Verification
-            SHA256 checksums will be attached to the release.
+            Privacy:
+            - Local-first application state
+            - No gh0st cloud required
+            - No analytics
+            - No telemetry by default
+            - xAI processes inference content sent for inference
+            - External MCP services have their own privacy boundaries
 
-            ### Notes
-            - This build is **ad-hoc signed** (identity "-")
-            - macOS may prompt to allow the app in Privacy & Security
-            - For notarized builds, Apple Developer Program enrollment is required
-          draft: false
-          prerelease: ${{ contains(github.ref, '-rc') || contains(github.ref, '-beta') || contains(github.ref, '-alpha') }}
-          args: --target aarch64-apple-darwin
-          # Ad-hoc signing for public releases without Apple certs
-          # signingIdentity: "-"
+            Known limitations:
+            - This macOS build is ad-hoc signed, not Developer ID signed or notarized
+            - macOS may require approval in Privacy & Security on first launch
+            - iOS remains in development
+            - Live ZDR availability depends on xAI team configuration
+            - Auto-update is not enabled until signed updater artifacts are configured
 
-  # Generate checksums for all release artifacts
+            Verify the DMG with the attached `SHA256SUMS.txt` before installation.
+          releaseDraft: false
+          prerelease: ${{ github.event_name == 'workflow_dispatch' && inputs.prerelease || contains(github.ref, '-rc') || contains(github.ref, '-beta') || contains(github.ref, '-alpha') }}
+          args: --target aarch64-apple-darwin --bundles app,dmg
+          releaseAssetNamePattern: gh0st_[version]_[arch].[ext]
+          uploadWorkflowArtifacts: true
+
   checksums:
-    name: Generate Checksums
+    name: Generate and publish checksums
     runs-on: ubuntu-latest
-    needs: [release, build-macos]
+    needs: macos
     steps:
       - uses: actions/checkout@v4
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts
       - name: Download release assets
-        run: |
-          gh release download ${{ github.ref_name }} --dir release-assets --repo ${{ github.repository }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Generate SHA256SUMS
+          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
         run: |
-          cd release-assets
-          sha256sum * > SHA256SUMS.txt
-          cat SHA256SUMS.txt
-      - name: Upload checksums to release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: release-assets/SHA256SUMS.txt
+          mkdir -p release-assets
+          gh release download "$RELEASE_TAG" --repo "${{ github.repository }}" --dir release-assets --pattern 'gh0st_*'
+      - name: Generate SHA256SUMS.txt
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # Build iOS (disabled by default - requires xcodegen/cocoapods)
-  build-ios:
-    name: Build iOS
-    runs-on: macos-latest
-    needs: pre-release
-    if: false  # Enable when xcodegen/cocoapods available in CI
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 9
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "pnpm"
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: aarch64-apple-ios
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-      - name: Build iOS project
+          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
         run: |
-          cd apps/client
-          cargo build --manifest-path src-tauri/gen/ios/Cargo.toml --target aarch64-apple-ios --release
+          test -n "$(find release-assets -maxdepth 1 -name '*.dmg' -print -quit)"
+          (cd release-assets && sha256sum gh0st_*.dmg > SHA256SUMS.txt)
+          cat release-assets/SHA256SUMS.txt
+      - name: Upload SHA256SUMS.txt
         env:
-          TAURI_PRIVATE_API: "true"
-      - name: Upload iOS artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: gh0st-ios
-          path: apps/client/src-tauri/gen/ios/target/aarch64-apple-ios/release/gh0st-ios
-          retention-days: 30
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+        run: gh release upload "$RELEASE_TAG" release-assets/SHA256SUMS.txt --repo "${{ github.repository }}" --clobber

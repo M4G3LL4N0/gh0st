@@ -1,6 +1,6 @@
 {
   "name": "@gh0st/client",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.1",
   "description": "gh0st React client for browser, macOS, and iOS",
   "type": "module",
   "scripts": {

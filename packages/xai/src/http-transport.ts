@@ -11,7 +11,7 @@ import {
   XAIResponsesResponse,
   XAIToolCall
 } from "./types.js";
-import { randomUUID } from "crypto";
+
 
 export class HTTPTransport implements XAITransport {
   private baseUrl: string;
@@ -204,7 +204,7 @@ export class HTTPTransport implements XAITransport {
         }
         if (output.type === "function_call" || output.type === "tool_call") {
           toolCalls.push({
-            id: output.id || randomUUID(),
+            id: output.id || globalThis.crypto.randomUUID(),
             type: "function",
             function: {
               name: output.name || "",

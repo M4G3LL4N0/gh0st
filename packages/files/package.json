@@ -1,6 +1,6 @@
 {
   "name": "@gh0st/files",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.1",
   "description": "File extraction, indexing, and retrieval for gh0st",
   "type": "module",
   "main": "./dist/index.js",

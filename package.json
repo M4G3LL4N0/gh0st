@@ -1,6 +1,6 @@
 {
   "name": "gh0st",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.1",
   "description": "Private AI client — local-first, encrypted, xAI-powered",
   "private": true,
   "scripts": {

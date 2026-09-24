@@ -1,6 +1,6 @@
 {
   "name": "@gh0st/site",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.1",
   "description": "gh0st public website and documentation",
   "type": "module",
   "scripts": {

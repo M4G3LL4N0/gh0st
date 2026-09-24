@@ -1,6 +1,6 @@
 {
   "name": "@gh0st/xai",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.1",
   "description": "xAI API client and transport abstraction for gh0st",
   "type": "module",
   "main": "./dist/index.js",

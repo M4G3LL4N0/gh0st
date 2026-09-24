@@ -48,6 +48,11 @@ Thumbs.db
 # Vercel
 .vercel
 
+# Generated package artifacts accidentally emitted into src
+packages/*/src/**/*.js
+packages/*/src/**/*.d.ts
+packages/*/src/**/*.map
+
 # TypeScript cache
 *.tsbuildinfo
 

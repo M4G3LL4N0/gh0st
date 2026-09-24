@@ -213,16 +213,7 @@ jobs:
       - name: Restore dependencies
         run: pnpm install --frozen-lockfile --offline
       - name: Build macOS with Tauri
-        uses: tauri-apps/tauri-action@v0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tagName: "ci-macos-${{ github.sha }}"
-          releaseName: "macOS CI Build ${{ github.sha }}"
-          releaseBody: "CI build for commit ${{ github.sha }}"
-          draft: true
-          prerelease: true
-          args: --target aarch64-apple-darwin
+        run: pnpm --filter=@gh0st/client tauri build --target aarch64-apple-darwin --bundles app
 
   doctor:
     name: gh0st doctor

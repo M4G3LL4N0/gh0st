@@ -33,7 +33,7 @@ gh0st is a local-first encrypted interface for xAI/Grok. Conversations, files, a
 |----------|--------|-------|
 | **CLI** | ✅ Available | Full 12-command interface |
 | **Browser** | ✅ Available | Local dev server + production build |
-| **macOS** | ✅ Available | Native `.app` + DMG installer (ad-hoc signed) |
+| **macOS** | 🟡 Source build verified | Native `.app` + DMG installer; public release in preparation |
 | **iOS** | 🟡 In Development | Code complete, simulator build pending xcodegen/cocoapods |
 
 ---
@@ -280,6 +280,7 @@ MIT License — see [LICENSE](LICENSE) for details.
 ## Links
 
 - **Repository**: https://github.com/M4G3LL4N0/gh0st
+- **Website source**: https://github.com/M4G3LL4N0/gh0st-website
 - **Issues**: https://github.com/M4G3LL4N0/gh0st/issues
 - **Discussions**: https://github.com/M4G3LL4N0/gh0st/discussions
 - **Releases**: https://github.com/M4G3LL4N0/gh0st/releases

@@ -1,6 +1,6 @@
 {
   "name": "@gh0st/core",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.1",
   "description": "Shared domain models and application logic for gh0st",
   "type": "module",
   "main": "./dist/index.js",
