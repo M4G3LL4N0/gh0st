@@ -1,11 +1,11 @@
-# CURRENT STATE - gh0st v1.0.0
+# CURRENT STATE - gh0st v1.0.0-rc.1
 
-**Last Updated**: 2024-01-15
-**Version**: 1.0.0
+**Last Updated**: 2026-09-24
+**Version**: 1.0.0-rc.1
 
 ## Overview
 
-gh0st is a local-first, encrypted AI client powered by xAI's Grok models. This document tracks the current implementation status across all components with honest verification status.
+gh0st is a local-first AI client powered by xAI's Grok models. The CLI provides the current encrypted workflow; the browser and macOS clients are early release-candidate surfaces. This document tracks the current implementation status across all components with honest verification status.
 
 ## VERIFIED LIVE
 
@@ -121,18 +121,19 @@ pnpm typecheck       # All clean ✅
 
 # macOS verified
 ./apps/client/src-tauri/target/release/bundle/macos/gh0st.app exists ✅
-./apps/client/src-tauri/target/release/bundle/dmg/gh0st_1.0.0_aarch64.dmg exists ✅
+./apps/client/src-tauri/target/release/bundle/dmg/gh0st_1.0.0-rc.1_aarch64.dmg exists ✅
 ```
 
 ## Summary
 
-**gh0st v1.0.0 is functionally complete for local development and daily use.**
+**gh0st v1.0.0-rc.1 is a verified release candidate with known native-client limitations.**
 
-All core packages build and test successfully. The CLI is fully operational with file-based encrypted storage. The browser client builds and is ready for local development via `pnpm dev:client`. The static site builds for deployment. The macOS native app and DMG installer have been successfully built.
+All core packages build and test successfully. The CLI is the current operational workflow with file-based encrypted storage. The browser client and macOS Tauri app are early interfaces; native encrypted persistence, Settings/API-key entry, biometric unlock, and auto-lock are not wired. The macOS app and DMG installer have been successfully built and publicly released as a prerelease.
 
-The only remaining blockers are external dependencies:
-1. **iOS native build** - Requires Homebrew for xcodegen/cocoapods
-2. **Apple Developer Program** - Required for signed/notarized distribution
-3. **xAI API key** - Required for live ZDR verification and chat
+The remaining blockers are:
+1. **Native client integrations** - Settings/API-key entry, native encrypted persistence, biometric unlock, and auto-lock
+2. **iOS native build** - Requires Homebrew for xcodegen/cocoapods
+3. **Apple Developer Program** - Required for signed/notarized distribution
+4. **xAI API key** - Required for live ZDR verification and chat
 
-The project is genuinely open-source ready with comprehensive documentation, security audit, and CI/CD pipelines.
+The project is open-source ready with comprehensive documentation, security audit, and CI/CD pipelines.

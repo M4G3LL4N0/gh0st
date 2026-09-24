@@ -1,8 +1,8 @@
 # Build Report
 
-**Date**: 2024-01-15
-**Version**: 1.0.0
-**Commit**: N/A (local build)
+**Date**: 2026-09-24
+**Version**: 1.0.0-rc.1
+**Commit**: 3cbdd0d (release artifact)
 
 ## Summary
 
@@ -136,7 +136,7 @@ pnpm mac:dmg      # Creates .dmg (3.3 MB)
 
 **Outputs**:
 - `./apps/client/src-tauri/target/release/bundle/macos/gh0st.app` ✅
-- `./apps/client/src-tauri/target/release/bundle/dmg/gh0st_1.0.0_aarch64.dmg` (3.3 MB) ✅
+- `./apps/client/src-tauri/target/release/bundle/dmg/gh0st_1.0.0-rc.1_aarch64.dmg` (3.3 MB) ✅
 
 **Verification**:
 - ✅ App bundle created with correct Info.plist
@@ -147,7 +147,7 @@ pnpm mac:dmg      # Creates .dmg (3.3 MB)
 **Info.plist verified**:
 - CFBundleIdentifier: `dev.gh0st`
 - CFBundleDisplayName: `gh0st`
-- CFBundleShortVersionString: `1.0.0`
+- CFBundleShortVersionString: `1.0.0-rc.1`
 - LSMinimumSystemVersion: `13.0`
 - LSApplicationCategoryType: `public.app-category.developer-tools`
 - NSHumanReadableCopyright: `MIT License`
@@ -291,7 +291,7 @@ gh0st/
 │   │   └── src-tauri/   # Native config
 │   │       └── target/release/bundle/
 │   │           ├── macos/gh0st.app      ✅
-│   │           └── dmg/gh0st_1.0.0_aarch64.dmg  ✅
+│   │           └── dmg/gh0st_1.0.0-rc.1_aarch64.dmg  ✅
 │   ├── cli/             # Node.js CLI
 │   │   └── dist/cli.js  # Executable
 │   └── site/            # Static site
@@ -328,13 +328,14 @@ gh0st/
 
 ## Conclusion
 
-**gh0st v1.0.0 is functionally complete and ready for local development and daily use.**
+**gh0st v1.0.0-rc.1 is a verified release candidate with known native-client limitations.**
 
-All core packages build and test successfully. The CLI is fully operational with file-based encrypted storage. The browser client builds and is ready for local development via `pnpm dev:client`. The static site builds for deployment. The macOS native app and DMG installer have been successfully built and verified.
+All core packages build and test successfully. The CLI is the current operational workflow with file-based encrypted storage. The browser client and macOS Tauri app are early interfaces; native encrypted persistence, Settings/API-key entry, biometric unlock, and auto-lock are not wired. The macOS app and DMG installer have been successfully built and publicly released as a prerelease.
 
-The only remaining blockers are external dependencies:
-1. **Homebrew/xcodegen/cocoapods** - Required for iOS native compilation
-2. **Apple Developer Program** - Required for signed distribution
-3. **xAI API key** - Required for live ZDR verification and chat
+The remaining blockers are:
+1. **Native client integrations** - Settings/API-key entry, native encrypted persistence, biometric unlock, and auto-lock
+2. **Homebrew/xcodegen/cocoapods** - Required for iOS native compilation
+3. **Apple Developer Program** - Required for signed distribution
+4. **xAI API key** - Required for live ZDR verification and chat
 
-The project is genuinely open-source ready with comprehensive documentation, security audit, and CI/CD pipelines.
+The project is open-source ready with comprehensive documentation, security audit, and CI/CD pipelines.

@@ -44,7 +44,7 @@ The architecture diagram should visually represent:
 │  │ ├─ Encrypted files & attachments                        │   │
 │  │ ├─ Agents & preferences                                 │   │
 │  │ ├─ Local memory & search index                          │   │
-│  │ └─ Secure credentials (Keychain/Secure Enclave)         │   │
+│  │ └─ CLI vault credentials (native integration pending)   │   │
 │  └──────────────┬──────────────────────────────────────────┘   │
 │                 │ Selected inference context                   │
 │                 ▼                                              │

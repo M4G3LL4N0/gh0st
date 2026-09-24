@@ -209,7 +209,7 @@ pnpm build
 2. Update `CHANGELOG.md`
 3. Run full test suite: `pnpm test && pnpm typecheck && pnpm lint`
 4. Build all: `pnpm build && pnpm tauri:build`
-5. Create git tag: `git tag v1.0.0`
+5. Create a prerelease tag: `git tag vX.Y.Z-rc.N`
 6. Push: `git push origin main --tags`
 7. GitHub Actions builds and releases
 

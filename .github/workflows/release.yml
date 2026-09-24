@@ -73,12 +73,11 @@ jobs:
 
             Available:
             - macOS Apple Silicon DMG and app archive
-            - Local CLI workflow
-            - Local browser UI
-            - Encrypted local conversations, files, agents, and preferences
+            - Local CLI workflow with encrypted file storage
+            - Early browser UI and macOS Tauri shell
             - xAI Responses API integration with `store=false`
             - ZDR-aware runtime verification when enabled for the user's xAI team
-            - Web, X, Code, and optional MCP tools
+            - Web, X, Code, and optional MCP modules
 
             Privacy:
             - Local-first application state
@@ -91,6 +90,9 @@ jobs:
             Known limitations:
             - This macOS build is ad-hoc signed, not Developer ID signed or notarized
             - macOS may require approval in Privacy & Security on first launch
+            - The macOS client is an early native shell: Settings/API-key entry, native encrypted persistence, biometric unlock, and auto-lock are not wired yet
+            - The browser client uses a local-storage path that is not connected to the encrypted vault; use the CLI for the current encrypted workflow
+            - Native privacy status surfaces are not connected to live ZDR verification in this release candidate
             - iOS remains in development
             - Live ZDR availability depends on xAI team configuration
             - Auto-update is not enabled until signed updater artifacts are configured

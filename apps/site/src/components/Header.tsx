@@ -9,7 +9,7 @@ export function Header() {
           <div className="flex items-center">
             <Link to="/" className="flex items-center gap-2" aria-label="gh0st home">
               <span className="text-2xl font-bold text-gray-900 dark:text-white">gh0st</span>
-              <span className="text-xs text-gray-500 dark:text-gray-400 font-mono">v1.0.0</span>
+              <span className="text-xs text-gray-500 dark:text-gray-400 font-mono">v1.0.0-rc.1</span>
             </Link>
           </div>
           <div className="hidden md:flex items-center gap-8">
@@ -23,7 +23,7 @@ export function Header() {
               Docs
             </Link>
             <a
-              href="https://github.com/gh0st"
+              href="https://github.com/M4G3LL4N0/gh0st"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400"

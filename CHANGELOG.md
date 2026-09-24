@@ -12,9 +12,10 @@ First public release candidate.
 ### Available
 
 - macOS Apple Silicon native application build
+- Public macOS DMG and `.app` tar.gz with published SHA-256 checksums
 - Local CLI workflow
 - Local browser UI
-- Encrypted local conversations, files, agents, and preferences
+- Encrypted local conversations, files, agents, and preferences in the CLI workflow
 - xAI Responses API integration with `store=false`
 - ZDR-aware runtime verification when enabled for the user's xAI team
 - Web, X, Code, and optional MCP tools
@@ -33,6 +34,8 @@ First public release candidate.
 ### Known limitations
 
 - macOS release artifacts are ad-hoc signed, not Developer ID signed or notarized
+- The macOS client is an early native shell; Settings/API-key entry, native encrypted persistence, biometric unlock, and auto-lock are not wired yet
+- The browser client uses a local-storage path that is not yet connected to the encrypted vault; use the CLI for the current encrypted workflow
 - iOS remains in development and is not publicly downloadable
 - Live ZDR verification depends on xAI team configuration
 - Auto-update is not enabled until signed updater artifacts are configured

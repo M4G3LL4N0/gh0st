@@ -1,6 +1,6 @@
 # gh0st User Guide
 
-**Version**: 1.0.0
+**Version**: 1.0.0-rc.1
 
 ---
 
@@ -110,11 +110,11 @@ gh0st ask "Your question here"
 | Mode | Location | Security |
 |------|----------|----------|
 | CLI | `~/.gh0st/config.json` | Encrypted in vault |
-| Browser | IndexedDB | Encrypted in vault |
-| macOS | Keychain (Secure Enclave) | Hardware-backed |
-| iOS | Keychain (Secure Enclave) | Hardware-backed |
+| Browser | Local storage | Vault integration pending |
+| macOS | Local storage path | Native vault integration pending |
+| iOS | — | In development; no public build |
 
-> **Never** share your API key. gh0st never sends it anywhere except xAI.
+> **Never** share your API key. The CLI stores it in its local vault; native macOS Settings and Keychain integration are not wired in `v1.0.0-rc.1`. gh0st never sends it anywhere except xAI.
 
 ---
 
@@ -347,7 +347,7 @@ open apps/client/src-tauri/target/release/bundle/macos/gh0st.app
 
 ```bash
 pnpm mac:dmg
-# Opens gh0st_1.0.0_aarch64.dmg
+# Opens gh0st_1.0.0-rc.1_aarch64.dmg
 # Drag to Applications
 ```
 
@@ -365,16 +365,13 @@ pnpm mac:dmg
 | Dark/Light mode | ✅ |
 | Keyboard shortcuts | ✅ |
 | Touchpad gestures | ✅ |
-| Secure Enclave vault | ✅ |
-| App lock (timeout) | ✅ |
-| Restart persistence | ✅ |
+| Native vault / Keychain | ⏳ Pending |
+| App lock (timeout) | ⏳ Pending |
+| Restart persistence | ⚠️ Partial |
 
 ### App Lock
 
-- Auto-lock: 1 / 5 / 15 min / never
-- Background lock: ✅
-- Face ID / Touch ID unlock: ✅ (Secure Enclave)
-- Passphrase unlock: ✅
+Native auto-lock, background lock, biometric unlock, and native vault persistence are not wired in `v1.0.0-rc.1`. Use the CLI’s vault workflow for the current encrypted path.
 
 ---
 
@@ -416,8 +413,8 @@ pnpm ios:build --device
 | Dark/Light mode | ✅ |
 | Reduced motion | ✅ |
 | Background privacy | ✅ |
-| Secure Enclave vault | ✅ |
-| Face ID / Touch ID | ✅ |
+| Native vault / Keychain | ⏳ Planned |
+| Face ID / Touch ID | ⏳ Planned |
 
 ### iOS Limitations
 
@@ -432,7 +429,7 @@ pnpm ios:build --device
 
 ## Privacy Inspector
 
-Access via the shield icon in the header (or Settings → Privacy).
+The status panel below documents the CLI and workspace status model. The native macOS shell currently exposes placeholder status commands and is not connected to live ZDR verification.
 
 ### Privacy Status Panel
 
@@ -489,7 +486,7 @@ Code: enabled
 
 ---
 
-## Vault & Encryption
+## Vault & Encryption (CLI)
 
 ### How It Works
 
@@ -668,11 +665,11 @@ gh0st doctor --setup
 
 ## Getting Help
 
-- **Issues**: [GitHub Issues](https://github.com/gh0st/gh0st/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/gh0st/gh0st/discussions)
+- **Issues**: [GitHub Issues](https://github.com/M4G3LL4N0/gh0st/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/M4G3LL4N0/gh0st/discussions)
 - **Security**: security@gh0st.dev
 - **Privacy**: privacy@gh0st.dev
 
 ---
 
-*gh0st v1.0.0 — Private AI that keeps the workspace yours.*
+*gh0st v1.0.0-rc.1 — Private AI that keeps the workspace yours.*

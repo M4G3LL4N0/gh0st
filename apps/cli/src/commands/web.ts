@@ -36,7 +36,7 @@ export async function runWeb(options: WebOptions) {
   });
 
   app.get("/api/config", (req, res) => {
-    res.json({ version: "1.0.0" });
+    res.json({ version: "1.0.0-rc.1" });
   });
 
   wss.on("connection", (ws, req) => {

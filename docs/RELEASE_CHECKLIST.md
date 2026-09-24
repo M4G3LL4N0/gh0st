@@ -1,7 +1,7 @@
 # Release Checklist
 
-**Version**: 1.0.0
-**Date**: 2024-01-15
+**Version**: 1.0.0-rc.1
+**Date**: 2026-09-24
 
 ---
 
@@ -149,7 +149,7 @@
 ### App Bundle
 - [x] CFBundleIdentifier: `dev.gh0st`
 - [x] CFBundleDisplayName: `gh0st`
-- [x] CFBundleShortVersionString: `1.0.0`
+- [x] CFBundleShortVersionString: `1.0.0-rc.1`
 - [x] LSMinimumSystemVersion: `13.0`
 - [x] LSApplicationCategoryType: `public.app-category.developer-tools`
 - [x] CFBundleIconFile: `icon.icns`
@@ -170,9 +170,10 @@
 - [x] Native file picker
 - [x] Dark/Light mode
 - [x] Window state restoration
-- [x] Secure Enclave vault
-- [x] App lock (timeout)
-- [x] Face ID / Touch ID unlock
+- [ ] Secure Enclave / Keychain vault
+- [ ] App lock (timeout)
+- [ ] Face ID / Touch ID unlock
+- [ ] Settings/API-key entry flow
 
 ### Distribution
 - [x] .app bundle created
@@ -307,9 +308,9 @@ pnpm ios:dev
 
 ---
 
-**Release Decision**: 
-- [ ] **READY FOR RELEASE** - All critical items complete
-- [ ] **BLOCKED** - See issues above
+**Release Decision**:
+- [x] **PRERELEASE READY** - v1.0.0-rc.1 artifacts published and verified
+- [ ] **STABLE READY** - Native client integrations, signing, and iOS remain incomplete
 
-**Version**: 1.0.0
-**Date**: 2024-01-15
+**Version**: 1.0.0-rc.1
+**Date**: 2026-09-24

@@ -1,11 +1,11 @@
 # Security Audit
 
-**Last Updated**: 2024-01-15
-**Version**: 1.0.0
+**Last Updated**: 2026-09-24
+**Version**: 1.0.0-rc.1
 
 ## Executive Summary
 
-This document summarizes the security posture of gh0st v1.0.0, including threat model, cryptographic implementation, key storage, ZDR verification, localhost security, external tool boundaries, and remaining risks.
+This document summarizes the security posture of gh0st v1.0.0-rc.1, including threat model, cryptographic implementation, key storage, ZDR verification, localhost security, external tool boundaries, and remaining risks. The CLI provides the current encrypted workflow; native macOS vault and biometric integrations are not wired.
 
 ## Threat Model
 

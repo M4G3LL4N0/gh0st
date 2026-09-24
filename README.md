@@ -12,7 +12,7 @@
 
 **Private AI that keeps the workspace yours.**
 
-gh0st is a local-first encrypted interface for xAI/Grok. Conversations, files, agents and local state stay on your device while xAI performs inference using `store=false` and, when enabled for your xAI team, verifiable Zero Data Retention.
+gh0st is a local-first interface for xAI/Grok. The CLI provides the current encrypted local-storage workflow; the macOS and browser clients are early interfaces. Conversations, files, agents, and local state stay on your device while xAI performs inference using `store=false` and, when enabled for your xAI team, verifiable Zero Data Retention.
 
 ---
 
@@ -33,7 +33,7 @@ gh0st is a local-first encrypted interface for xAI/Grok. Conversations, files, a
 |----------|--------|-------|
 | **CLI** | ✅ Available | Full 12-command interface |
 | **Browser** | ✅ Available | Local dev server + production build |
-| **macOS** | 🟡 Source build verified | Native `.app` + DMG installer; public release in preparation |
+| **macOS** | 🟡 Public release candidate | Native Apple Silicon shell + DMG; ad-hoc signed, not notarized; client setup limitations apply |
 | **iOS** | 🟡 In Development | Code complete, simulator build pending xcodegen/cocoapods |
 
 ---
@@ -42,9 +42,10 @@ gh0st is a local-first encrypted interface for xAI/Grok. Conversations, files, a
 
 ### For Users (macOS)
 
-1. **Download** the latest DMG from [GitHub Releases](https://github.com/M4G3LL4N0/gh0st/releases)
-2. **Install** by dragging to Applications (or run `./scripts/mac-install.sh` from source)
-3. **Launch** gh0st and enter your xAI API key on first run
+1. **Download** the `v1.0.0-rc.1` Apple Silicon DMG from the [GitHub Release](https://github.com/M4G3LL4N0/gh0st/releases/tag/v1.0.0-rc.1)
+2. **Verify** the download with the published [`SHA256SUMS.txt`](https://github.com/M4G3LL4N0/gh0st/releases/download/v1.0.0-rc.1/SHA256SUMS.txt). Expected DMG SHA-256: `cc6e9cb35d6b6908e4791fe3b815c0355487dd3d70c25c3f898250e46491cb19`
+3. **Install** by dragging `gh0st.app` to Applications (or run `./scripts/mac-install.sh` from source)
+4. **Launch** gh0st. The native client currently has no working Settings/API-key entry flow; use the CLI for the current encrypted workflow.
 
 ### For Developers / Source Build
 
@@ -88,11 +89,11 @@ pnpm dev:client    # Starts Vite dev server at http://localhost:1420
 │                      USER DEVICE                                │
 │  ┌─────────────────────────────────────────────────────────┐   │
 │  │ gh0st                                                    │   │
-│  │ ├─ Encrypted conversations (AES-256-GCM)                │   │
-│  │ ├─ Encrypted files & attachments                        │   │
-│  │ ├─ Agents & preferences                                 │   │
-│  │ ├─ Local memory & search index                          │   │
-│  │ └─ Secure credentials (Keychain/Secure Enclave)         │   │
+ │  │ ├─ CLI encrypted conversations (AES-256-GCM)          │   │
+ │  │ ├─ CLI encrypted files & attachments                   │   │
+ │  │ ├─ CLI agents & preferences                            │   │
+ │  │ ├─ Local memory & search index (workspace)              │   │
+│  │ └─ Secure credentials (CLI vault; native integration pending) │   │
 │  └──────────────┬──────────────────────────────────────────┘   │
 │                 │ Selected inference context                   │
 │                 ▼                                              │
@@ -125,8 +126,8 @@ pnpm dev:client    # Starts Vite dev server at http://localhost:1420
 
 ### Encrypted Local Storage
 - **CLI**: File-based JSON storage in `~/.gh0st/storage/`
-- **Browser**: IndexedDB via Dexie with encryption
-- **macOS/iOS**: Keychain / Secure Enclave backed vault
+- **Browser**: Local storage path; encrypted vault integration is pending
+- **macOS/iOS**: Native vault integration is still in development; do not treat the current shell as hardware-backed storage
 - AES-256-GCM encryption with Argon2id key derivation (64MB, 3 iterations, 4 parallel)
 
 ### Agents & Tools

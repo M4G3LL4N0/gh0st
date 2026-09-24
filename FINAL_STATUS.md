@@ -1,6 +1,6 @@
-# GH0ST v1.0.0 - FINAL STATUS REPORT
+# GH0ST v1.0.0-rc.1 - RELEASE STATUS REPORT
 
-## ✅ COMPLETE - READY FOR DAILY USE
+## RELEASE CANDIDATE - VERIFIED WITH KNOWN LIMITATIONS
 
 ---
 
@@ -12,13 +12,13 @@
 | **12 CLI Commands** | ✅ LIVE | All execute without crash |
 | **Doctor Diagnostics** | ✅ LIVE | `--fix`, `--setup`, `--setup` all work |
 | **File Storage (CLI)** | ✅ LIVE | `~/.gh0st/storage/` JSON files |
-| **File Storage (Browser)** | ✅ LOCAL | IndexedDB via Dexie |
-| **Vault Encryption** | ✅ LIVE | AES-256-GCM + Argon2id |
+| **File Storage (Browser)** | ✅ LOCAL | Local storage path; encrypted vault integration pending |
+| **Vault Encryption** | ✅ CLI | AES-256-GCM + Argon2id; native integration pending |
 | **ZDR Verification Logic** | ✅ LOCAL | Code complete, mock tests pass |
 | **Strict Mode Gate** | ✅ LIVE | Blocks before ZDR verified |
 | **Browser Client** | ✅ BUILT | 1.1 MB production build |
 | **Static Site** | ✅ BUILT | 190 KB production build |
-| **macOS .app** | ✅ BUILT | `gh0st.app` + DMG (3.3 MB) |
+| **macOS .app** | ✅ BUILT | Early native shell; client settings/vault integration pending |
 | **27 Security Tests** | ✅ PASSING | All crypto/vault/ZDR tests pass |
 | **TypeScript** | ✅ CLEAN | All 9 packages pass |
 | **Build System** | ✅ WORKING | `pnpm build` all 9 packages |
@@ -38,7 +38,7 @@ gh0st/
 │   │   └── release/bundle/macos/
 │   │       └── gh0st.app/           ← macOS app bundle ✅
 │   │   └── release/bundle/dmg/
-│   │       └── gh0st_1.0.0_aarch64.dmg (3.3 MB) ✅
+│   │       └── gh0st_1.0.0-rc.1_aarch64.dmg (3.3 MB) ✅
 │   └── site/dist/                   ← Static site (190 KB) ✅
 ├── packages/
 │   ├── core/      (domain models)
@@ -69,11 +69,11 @@ export PATH="$HOME/.local/node-v20.18.0-darwin-arm64/bin:$HOME/.cargo/bin:$PATH"
 ./apps/cli/dist/cli.js ask "question"  # One-shot
 ./apps/cli/dist/cli.js web           # Browser UI at :1420
 
-# macOS app
+# macOS app (early native shell; native Settings/vault integration pending)
 open apps/client/src-tauri/target/release/bundle/macos/gh0st.app
 
 # DMG installer
-open apps/client/src-tauri/target/release/bundle/dmg/gh0st_1.0.0_aarch64.dmg
+open apps/client/src-tauri/target/release/bundle/dmg/gh0st_1.0.0-rc.1_aarch64.dmg
 ```
 
 ---
@@ -82,13 +82,24 @@ open apps/client/src-tauri/target/release/bundle/dmg/gh0st_1.0.0_aarch64.dmg
 
 | Feature | Implementation |
 |---------|----------------|
-| **Local-first** | All data in `~/.gh0st/` |
-| **Encryption** | AES-256-GCM + HKDF-SHA256 |
-| **Passphrase** | Argon2id (64MB, 3i, 4p) |
-| **ZDR Verification** | Preflight + header check |
+| **Local-first** | CLI data in `~/.gh0st/`; native client path is early |
+| **Encryption** | AES-256-GCM + HKDF-SHA256 in CLI |
+| **Passphrase** | Argon2id (64MB, 3i, 4p) in CLI |
+| **ZDR Verification** | Preflight + header check in CLI/client module; native status wiring pending |
 | **Strict Mode** | Blocks before ZDR verified |
 | **No telemetry** | Zero analytics |
 | **No cloud** | No gh0st servers |
+
+---
+
+## KNOWN RELEASE LIMITATIONS
+
+- The macOS app is an early native shell.
+- Settings/API-key entry, native encrypted persistence, biometric unlock, and auto-lock are not wired.
+- The browser client uses a local-storage path not connected to the encrypted vault.
+- The macOS artifact is ad-hoc signed and not notarized.
+- iOS remains in development.
+- Live ZDR availability depends on the user's xAI team configuration.
 
 ---
 
@@ -133,26 +144,26 @@ open apps/client/src-tauri/target/release/bundle/dmg/gh0st_1.0.0_aarch64.dmg
 
 ## 🎯 FINAL VERDICT
 
-**gh0st v1.0.0 is functionally complete and ready for daily use.**
+**gh0st v1.0.0-rc.1 is a verified release candidate with known native-client limitations.**
 
-### ✅ What Works Today
+### What Works Today
 - Full CLI with 12 commands
 - Encrypted file-based storage (CLI)
-- Encrypted IndexedDB storage (Browser)
+- Local browser UI foundation (vault integration pending)
 - 27 passing security tests
-- macOS native app (ad-hoc signed)
+- macOS native shell (ad-hoc signed; settings/vault integration pending)
 - macOS DMG installer (3.3 MB)
 - Browser client (React + Vite + Tauri)
 - Static documentation site
-- Full privacy model with ZDR verification
+- CLI privacy model with ZDR verification
 
 ### ⚠️ Needs External Action
 1. **xAI API Key** - Required for live ZDR/chat
 2. **Apple Developer Program** - For signed/notarized macOS & iOS TestFlight
 3. **Homebrew** - Required for iOS tooling (xcodegen, cocoapods)
 
-### 🚀 Ready for Daily Use
+### Current Recommended Path
 ```bash
-# One command to rule them all
+# Start with the CLI, the current encrypted workflow
 pnpm setup && ./apps/cli/dist/cli.js doctor --setup
 ```

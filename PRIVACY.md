@@ -14,13 +14,13 @@
 
 ## What Stays On Your Device
 
-All of the following are stored locally and encrypted:
+The CLI stores the following locally with AES-256-GCM encryption. The browser and native clients currently use a local-storage path that is not yet connected to the encrypted vault:
 
 - Conversations and messages
 - Attachments and files
 - Agents and preferences
-- Encrypted continuation state
-- API keys (encrypted in vault)
+- CLI encrypted continuation state
+- CLI vault-encrypted API keys
 
 ## What Goes to xAI
 
@@ -41,8 +41,8 @@ Only when you send a message:
 
 ## Your Rights
 
-- **Access**: All your data is in `~/.gh0st/` (encrypted)
-- **Portability**: Encrypted export/import between devices
+- **Access**: CLI data is in `~/.gh0st/` (encrypted); native client persistence is still being wired
+- **Portability**: CLI encrypted export/import between devices
 - **Deletion**: `gh0st wipe` removes all local data
 - **Control**: Toggle tools, agents, privacy modes per conversation
 
