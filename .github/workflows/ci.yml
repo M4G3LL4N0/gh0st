@@ -14,6 +14,8 @@ jobs:
   install:
     name: Install dependencies
     runs-on: ubuntu-latest
+    outputs:
+      cache-key: ${{ steps.cache-key.outputs.key }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup pnpm
@@ -25,6 +27,9 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
+      - name: Generate cache key
+        id: cache-key
+        run: echo "key=pnpm-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('**/package.json') }}" >> $GITHUB_OUTPUT
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -127,6 +132,12 @@ jobs:
         run: pnpm install --frozen-lockfile --offline
       - name: Build web client
         run: pnpm build:client
+      - name: Upload web build
+        uses: actions/upload-artifact@v4
+        with:
+          name: gh0st-web
+          path: apps/client/dist/
+          retention-days: 7
 
   build-cli:
     name: Build CLI
@@ -147,6 +158,12 @@ jobs:
         run: pnpm install --frozen-lockfile --offline
       - name: Build CLI
         run: pnpm build:cli
+      - name: Upload CLI build
+        uses: actions/upload-artifact@v4
+        with:
+          name: gh0st-cli
+          path: apps/cli/dist/
+          retention-days: 7
 
   build-site:
     name: Build site
@@ -167,9 +184,15 @@ jobs:
         run: pnpm install --frozen-lockfile --offline
       - name: Build site
         run: pnpm build:site
+      - name: Upload site build
+        uses: actions/upload-artifact@v4
+        with:
+          name: gh0st-site
+          path: apps/site/dist/
+          retention-days: 7
 
   build-macos:
-    name: Build macOS
+    name: Build macOS (Apple Silicon)
     runs-on: macos-latest
     needs: install
     steps:
@@ -183,47 +206,23 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
         with:
-          targets: aarch64-apple-darwin
+          key: ${{ runner.os }}-cargo-${{ hashFiles('apps/client/src-tauri/Cargo.lock') }}
       - name: Restore dependencies
         run: pnpm install --frozen-lockfile --offline
-      - name: Build macOS
-        run: |
-          cd apps/client
-          pnpm tauri build --target aarch64-apple-darwin
+      - name: Build macOS with Tauri
+        uses: tauri-apps/tauri-action@v0
         env:
-          TAURI_PRIVATE_API: "true"
-
-  build-ios:
-    name: Build iOS
-    runs-on: macos-latest
-    needs: install
-    if: false
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v3
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          version: 9
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: "pnpm"
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: aarch64-apple-ios
-      - name: Restore dependencies
-        run: pnpm install --frozen-lockfile --offline
-      - name: Build iOS
-        run: |
-          cd apps/client
-          pnpm tauri build --target aarch64-apple-ios --config ./src-tauri/gen/ios/tauri.conf.json
-        env:
-          TAURI_PRIVATE_API: "true"
+          tagName: "ci-macos-${{ github.sha }}"
+          releaseName: "macOS CI Build ${{ github.sha }}"
+          releaseBody: "CI build for commit ${{ github.sha }}"
+          draft: true
+          prerelease: true
+          args: --target aarch64-apple-darwin
 
   doctor:
     name: gh0st doctor
@@ -245,3 +244,16 @@ jobs:
       - name: Run doctor
         run: node apps/cli/dist/cli.js doctor
         continue-on-error: true
+
+  # Dependency review for PRs
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          config-file: '.github/dependency-review-config.yml'
+          fail-on-severity: high

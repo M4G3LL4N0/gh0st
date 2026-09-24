@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security Vulnerability
+    url: https://github.com/M4G3LL4N0/gh0st/security/advisories/new
+    about: Report a security vulnerability privately
+  - name: Privacy Question
+    url: mailto:privacy@gh0st.dev
+    about: Ask about privacy practices or ZDR
+  - name: General Question
+    url: https://github.com/M4G3LL4N0/gh0st/discussions/new?category=q-a
+    about: Ask a question in GitHub Discussions

@@ -1,0 +1,124 @@
+# Dependabot configuration for gh0st
+# Weekly updates for npm/pnpm and Cargo dependencies
+
+version: 2
+updates:
+  # npm/pnpm dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    groups:
+      dev-dependencies:
+        patterns:
+          - "@types/*"
+          - "typescript"
+          - "eslint*"
+          - "prettier"
+          - "vitest"
+          - "@vitejs/*"
+          - "tailwindcss"
+          - "postcss"
+          - "autoprefixer"
+        update-types:
+          - "minor"
+          - "patch"
+      tauri:
+        patterns:
+          - "@tauri-apps/*"
+        update-types:
+          - "minor"
+          - "patch"
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "react-router*"
+        update-types:
+          - "minor"
+          - "patch"
+      ui-deps:
+        patterns:
+          - "lucide-react"
+          - "zustand"
+          - "nanoid"
+          - "clsx"
+          - "tailwind-merge"
+        update-types:
+          - "minor"
+          - "patch"
+      cli-deps:
+        patterns:
+          - "commander"
+          - "chalk"
+          - "ora"
+          - "marked"
+          - "marked-terminal"
+          - "ws"
+          - "express"
+          - "cors"
+          - "open"
+        update-types:
+          - "minor"
+          - "patch"
+    # Don't auto-merge security-sensitive deps without tests
+    allow:
+      - dependency-type: "direct"
+      - dependency-type: "indirect"
+    ignore:
+      # Ignore major version upgrades for core framework deps
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@tauri-apps/cli"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@tauri-apps/api"
+        update-types: ["version-update:semver-major"]
+
+  # Cargo dependencies (Rust)
+  - package-ecosystem: "cargo"
+    directory: "/apps/client/src-tauri"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    groups:
+      tauri-deps:
+        patterns:
+          - "tauri*"
+        update-types:
+          - "minor"
+          - "patch"
+      crypto-deps:
+        patterns:
+          - "aes-gcm"
+          - "hkdf"
+          - "argon2"
+          - "ring"
+          - "zeroize"
+        update-types:
+          - "minor"
+          - "patch"
+    # Security updates always run
+    allow:
+      - dependency-type: "direct"
+      - dependency-type: "indirect"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    allow:
+      - dependency-type: "direct"
+      - dependency-type: "indirect"

@@ -1,0 +1,34 @@
+# CodeQL Configuration for gh0st
+
+# Extend default queries with security-and-quality
+# See: https://github.com/github/codeql/blob/main/javascript/ql/src/codeql-suites/security-and-quality.qls
+
+name: "gh0st CodeQL Config"
+
+# Disable specific queries that may be noisy
+disable:
+  - js/redundant-null-check
+  - js/useless-comparison-test
+
+# Paths to include in analysis
+paths:
+  - "apps/"
+  - "packages/"
+  - "scripts/"
+
+# Paths to exclude
+paths-ignore:
+  - "node_modules/"
+  - "dist/"
+  - "build/"
+  - ".turbo/"
+  - "apps/client/src-tauri/target/"
+  - "apps/client/src-tauri/gen/"
+  - "*.d.ts"
+  - "*.js.map"
+  - "*.d.ts.map"
+
+# Query suites to use
+queries:
+  - uses: security-and-quality
+  - uses: security-extended

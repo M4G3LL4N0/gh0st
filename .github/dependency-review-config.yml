@@ -1,0 +1,15 @@
+# Dependency Review Configuration
+# Fail PRs that introduce high/critical vulnerabilities
+
+# Severity levels: low, moderate, high, critical
+fail-on-severity: high
+
+# Allow specific vulnerabilities if they have mitigations
+# Example:
+# allowed-vulnerabilities:
+#   - GHSA-xxxx-xxxx-xxxx  # Description of why this is allowed
+
+# Private registry configuration (if needed)
+# private-registry:
+#   npm:
+#     url: https://npm.pkg.github.com

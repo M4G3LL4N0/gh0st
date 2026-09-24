@@ -17,7 +17,7 @@ This project follows our [Code of Conduct](./CODE_OF_CONDUCT.md). By participati
 ### Development Setup
 
 ```bash
-git clone https://github.com/gh0st/gh0st.git
+git clone https://github.com/M4G3LL4N0/gh0st.git
 cd gh0st
 pnpm install
 pnpm build

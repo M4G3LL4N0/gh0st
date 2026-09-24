@@ -1,0 +1,67 @@
+name: CodeQL Analysis
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    - cron: '0 0 * * 1'  # Weekly on Monday
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [javascript, typescript, rust]
+        # CodeQL supports: javascript, typescript, rust, python, go, java, cpp, csharp, ruby, swift
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          queries: +security-and-quality
+          config-file: ./.github/codeql-config.yml
+
+      - name: Setup Node.js (for JS/TS)
+        if: matrix.language == 'javascript' || matrix.language == 'typescript'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Setup pnpm (for JS/TS)
+        if: matrix.language == 'javascript' || matrix.language == 'typescript'
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Install dependencies (for JS/TS)
+        if: matrix.language == 'javascript' || matrix.language == 'typescript'
+        run: pnpm install --frozen-lockfile
+
+      - name: Setup Rust (for Rust)
+        if: matrix.language == 'rust'
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build Rust (for Rust analysis)
+        if: matrix.language == 'rust'
+        run: |
+          cd apps/client/src-tauri
+          cargo build --release
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"

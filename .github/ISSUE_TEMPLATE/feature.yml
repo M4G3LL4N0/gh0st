@@ -1,0 +1,82 @@
+name: Feature Request
+description: Suggest a new feature or enhancement
+title: "[FEATURE]: "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a feature! Please describe your idea below.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve? What's the use case?
+      placeholder: "As a user, I want to... so that..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How would you like this to work? Describe the ideal implementation.
+      placeholder: "Add a new command `gh0st search` that..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Other approaches you've thought of or seen elsewhere
+      placeholder: "Could also be implemented as a browser extension..."
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      description: Which part of gh0st would this affect?
+      options:
+        - CLI
+        - Browser Client
+        - macOS App
+        - iOS App
+        - Core (encryption, storage, models)
+        - xAI Transport (HTTP/WS)
+        - Agents/Tools
+        - Files/Search
+        - Documentation
+        - CI/CD
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - Critical (blocks release, security)
+        - High (core feature, many users)
+        - Medium (nice to have, specific use case)
+        - Low (polish, edge case)
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy Impact
+      description: Does this feature affect the privacy model?
+      options:
+        - label: No privacy impact (pure UI/UX, local-only)
+        - label: May affect privacy model (new data flow, external integration)
+          description: If checked, please explain in Additional Context
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Mockups, diagrams, related issues, or any other context
+      placeholder: "Related to #123..."
