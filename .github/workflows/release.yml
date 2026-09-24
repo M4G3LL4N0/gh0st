@@ -59,6 +59,7 @@ jobs:
         with:
           key: ${{ runner.os }}-cargo-${{ hashFiles('apps/client/src-tauri/Cargo.lock') }}
       - run: pnpm install --frozen-lockfile
+      - run: pnpm build
       - uses: tauri-apps/tauri-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
