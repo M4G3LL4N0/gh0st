@@ -17,7 +17,7 @@
     "dev": "tsc --watch",
     "test": "vitest run",
     "test:unit": "vitest run --reporter=verbose",
-    "test:security": "vitest run --reporter=verbose src/security.test.ts",
+    "test:security": "vitest run --reporter=verbose",
     "lint": "eslint src --ext .ts",
     "typecheck": "tsc --noEmit"
   },
