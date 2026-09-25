@@ -67,6 +67,7 @@ packages/*/src/**/*.map
 tmp/
 temp/
 *.tmp
+.worktrees/
 
 # Release artifacts
 *.tar.gz
