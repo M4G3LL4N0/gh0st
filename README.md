@@ -1,5 +1,9 @@
 # gh0st
 
+<p align="center">
+  <img src="assets/social-card.png" alt="gh0st" width="100%">
+</p>
+
 [![CI](https://github.com/M4G3LL4N0/gh0st/actions/workflows/ci.yml/badge.svg)](https://github.com/M4G3LL4N0/gh0st/actions/workflows/ci.yml)
 [![Security](https://github.com/M4G3LL4N0/gh0st/actions/workflows/security.yml/badge.svg)](https://github.com/M4G3LL4N0/gh0st/actions/workflows/security.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
