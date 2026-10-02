@@ -17,7 +17,7 @@
     "typecheck": "pnpm -r typecheck",
     "lint": "pnpm -r lint",
     "setup": "bash ./setup.sh",
-    "verify": "pnpm typecheck && pnpm build && pnpm test",
+    "verify": "pnpm build && pnpm typecheck && pnpm test",
     "tauri:dev": "pnpm --filter=@gh0st/client tauri dev",
     "tauri:build": "pnpm --filter=@gh0st/client tauri build",
     "mac:dev": "pnpm tauri:dev",
