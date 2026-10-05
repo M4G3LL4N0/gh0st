@@ -43,7 +43,7 @@ jobs:
 
       - name: Setup pnpm (for JS/TS)
         if: matrix.language == 'javascript' || matrix.language == 'typescript'
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
 
       - name: Install dependencies (for JS/TS)
         if: matrix.language == 'javascript' || matrix.language == 'typescript'
