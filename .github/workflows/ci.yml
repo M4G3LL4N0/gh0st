@@ -196,8 +196,16 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('apps/client/src-tauri/Cargo.lock') }}
       - name: Restore dependencies
         run: pnpm install --frozen-lockfile --offline
+      # `working-directory` is set explicitly rather than relying on
+      # `pnpm --filter` to run the command inside apps/client. In CI this step
+      # failed with cargo reporting no Cargo.toml at the repository root, which
+      # is what happens when the command runs one level too high. I could not
+      # reproduce the difference locally -- same pnpm 9.0.0 pin, same tree, and
+      # both `exec` and the bare form resolve correctly on this machine -- so
+      # this removes the ambiguity rather than claiming a proven root cause.
       - name: Build macOS with Tauri
-        run: pnpm --filter=@gh0st/client tauri build --target aarch64-apple-darwin --bundles app
+        working-directory: apps/client
+        run: pnpm exec tauri build --target aarch64-apple-darwin --bundles app
 
   doctor:
     name: gh0st doctor
