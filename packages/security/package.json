@@ -15,7 +15,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "test": "vitest run",
+    "test": "vitest run --dir src",
     "test:unit": "vitest run --reporter=verbose",
     "test:security": "vitest run --reporter=verbose",
     "lint": "eslint src --ext .ts",
