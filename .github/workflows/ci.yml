@@ -44,8 +44,13 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
+      # No --offline. It was hard-failing with ERR_PNPM_NO_OFFLINE_TARBALL
+      # whenever a tarball was absent from the restored store, which took down
+      # all nine dependent jobs at once instead of one. --frozen-lockfile still
+      # guarantees the resolution is identical; letting pnpm fetch a missing
+      # tarball costs cache speed on a cold run and correctness on every other.
       - name: Restore dependencies
-        run: pnpm install --frozen-lockfile --offline
+        run: pnpm install --frozen-lockfile
       - name: Build workspace outputs
         run: pnpm build
       - name: Run typecheck
@@ -65,7 +70,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
       - name: Restore dependencies
-        run: pnpm install --frozen-lockfile --offline
+        run: pnpm install --frozen-lockfile
       - name: Run lint
         run: pnpm lint
 
@@ -83,7 +88,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
       - name: Restore dependencies
-        run: pnpm install --frozen-lockfile --offline
+        run: pnpm install --frozen-lockfile
       - name: Run tests
         run: pnpm test
 
@@ -101,7 +106,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
       - name: Restore dependencies
-        run: pnpm install --frozen-lockfile --offline
+        run: pnpm install --frozen-lockfile
       - name: Run security tests
         run: pnpm test:security
 
@@ -119,7 +124,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
       - name: Restore dependencies
-        run: pnpm install --frozen-lockfile --offline
+        run: pnpm install --frozen-lockfile
       - name: Build web client
         run: pnpm build:client
       - name: Upload web build
@@ -143,7 +148,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
       - name: Restore dependencies
-        run: pnpm install --frozen-lockfile --offline
+        run: pnpm install --frozen-lockfile
       - name: Build CLI
         run: pnpm build:cli
       - name: Upload CLI build
@@ -167,7 +172,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
       - name: Restore dependencies
-        run: pnpm install --frozen-lockfile --offline
+        run: pnpm install --frozen-lockfile
       - name: Build site
         run: pnpm build:site
       - name: Upload site build
@@ -195,9 +200,17 @@ jobs:
         with:
           key: ${{ runner.os }}-cargo-${{ hashFiles('apps/client/src-tauri/Cargo.lock') }}
       - name: Restore dependencies
-        run: pnpm install --frozen-lockfile --offline
+        run: pnpm install --frozen-lockfile
+      # `working-directory` is set explicitly rather than relying on
+      # `pnpm --filter` to run the command inside apps/client. In CI this step
+      # failed with cargo reporting no Cargo.toml at the repository root, which
+      # is what happens when the command runs one level too high. I could not
+      # reproduce the difference locally -- same pnpm 9.0.0 pin, same tree, and
+      # both `exec` and the bare form resolve correctly on this machine -- so
+      # this removes the ambiguity rather than claiming a proven root cause.
       - name: Build macOS with Tauri
-        run: pnpm --filter=@gh0st/client tauri build --target aarch64-apple-darwin --bundles app
+        working-directory: apps/client
+        run: pnpm exec tauri build --target aarch64-apple-darwin --bundles app
 
   doctor:
     name: gh0st doctor
@@ -213,7 +226,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
       - name: Restore dependencies
-        run: pnpm install --frozen-lockfile --offline
+        run: pnpm install --frozen-lockfile
       - name: Run doctor
         run: node apps/cli/dist/cli.js doctor
         continue-on-error: true
