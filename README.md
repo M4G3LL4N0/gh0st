@@ -1,101 +1,62 @@
 # gh0st
 
-> gh0st is a web application project. Built in Express. 24 entry points (index.html, index.ts, main.rs). TESTED: 8 test files, via Vitest, 8 CI workflows.
+> A local-first xAI/Grok client where privacy boundaries are part of the product surface.
 
-The implementation summary below is intentionally conservative. Claims from NORTHSTAR are not presented as shipped functionality.
+A local-first xAI/Grok client with CLI and React/Tauri surfaces, encrypted vault primitives, local storage, file processing, and explicit ZDR checks.
 
-- [GitHub repository](https://github.com/M4G3LL4N0/gh0st)
-- [Project site](https://gh0st-six.vercel.app)
+[Project site](https://gh0st-six.vercel.app) · [NOAERTH](https://www.noaerth.com)
 
-<!-- NOAERTH_IMAGE_SLOT: gh0st/hero -->
+![gh0st local computing sanctuary](assets/images/hero.svg)
 
-## What it is
+## Why gh0st exists
 
-gh0st is a web application project. Built in Express. 24 entry points (index.html, index.ts, main.rs). TESTED: 8 test files, via Vitest, 8 CI workflows.
+Most AI clients make the network boundary invisible. gh0st makes the local control surface visible: conversations, files, storage, transport, and Zero Data Retention checks are separate concerns that can be inspected.
 
-This repository is part of the NOAERTH venture ecosystem. The current public-facing evidence identifies it as a early-stage project rather than a production-ready system.
+## The client experience
 
-## Capabilities
+The CLI exposes chat, ask, web, status, ZDR, agents, chats, export, import, lock, wipe, and doctor command surfaces. The React/Tauri client adds chat UI, model selection, privacy indicators, attachments, tool toggles, and an agent selector. The xAI package includes HTTP/WebSocket transport code and SSE streaming.
 
-### Available evidence
+![gh0st privacy boundary](assets/images/privacy-boundary.svg)
 
-- The repository contains the implementation and documentation associated with the project description above.
-- The technology signals currently visible in the local project are listed in the technical notes below.
-- No additional capability is asserted here without a direct implementation reference.
+## Architecture and data boundaries
 
-### Experimental or planned
+`apps/cli` and the React/Tauri client sit on shared core, security, storage, xAI transport, file-processing, and UI packages. The intended security primitives include AES-256-GCM and HKDF purpose-derived keys.
 
-Roadmap intent is deliberately not represented as shipped functionality. Review NORTHSTAR and source implementation together before adding future-facing claims.
+![gh0st package architecture](assets/images/architecture.svg)
 
-<!-- NOAERTH_IMAGE_SLOT: gh0st/workflow -->
-
-## How it works
-
-The current evidence supports a repository-level application or tool workflow, but does not provide enough verified detail in the Part 1 record to publish a component-level architecture diagram. The architecture slot is reserved for a deterministic diagram after the source flow is reviewed.
-
-<!-- NOAERTH_IMAGE_SLOT: gh0st/architecture -->
+Important implementation boundaries remain visible: Tauri vault commands contain stubs; browser state uses ordinary `localStorage`; file storage writes ordinary JSON; and tool-call/retry/edit paths are incomplete. This README does not turn those gaps into security guarantees.
 
 ## Quick start
 
-### Prerequisites
-
-- A runtime suitable for `Node.js`.
-- A clean checkout of this repository.
-
-### Install
-
-```sh
-pnpm install
+```bash
+`./setup.sh`
+`pnpm install`
+`pnpm build`
+`./apps/cli/dist/cli.js doctor`
+`./apps/cli/dist/cli.js chat`
 ```
 
-### Run locally
+The commands are documented source commands. A live xAI API-key run and current ZDR behavior still need independent verification.
 
-```sh
-Use the repository's documented entry point after installing dependencies.
-```
+## Evidence snapshot
 
-### Build
+| Evidence | Interpretation |
+|---|---|
+| 12 CLI command surfaces | Source-backed; see `v4/VERIFIED_METRICS.json` for definition and status. |
+| 1 committed security test file (not executed here) | Source-backed; see `v4/VERIFIED_METRICS.json` for definition and status. |
+| AES-256-GCM/HKDF primitives | Source-backed; see `v4/VERIFIED_METRICS.json` for definition and status. |
 
-```sh
-pnpm run build
-```
+## Source map
 
-### Test
+- `apps/cli/src/cli.ts`
+- `packages/security/src/web-crypto.ts`
+- `packages/xai/src/http-transport.ts`
+- `packages/storage/src/file-storage/file-storage.ts`
 
-```sh
-pnpm run test
-```
+## Status
 
-Commands are included only when they were detected in the repository manifest; verify environment-specific requirements before deployment.
+Research-stage / active development. The strongest current story is the privacy architecture and local client surface, not production security certification.
 
-## Technical notes
+## Roadmap boundary
 
-- **Primary language:** JavaScript/TypeScript
-- **Runtime:** Node.js
-- **Package manager:** pnpm
-- **Framework and integration signals:** See the source tree and package manifests; no framework claim is made here without a direct implementation reference.
-- **Entry-point signals:** package.json
-- **Test evidence:** No test evidence recorded in the inventory
-- **Repository topics:** `typescript`, `apps`, `crypto`, `express`, `index`, `policy`, `react`, `tailwind-css`
-
-## Status and roadmap
-
-**Current status:** Early-stage project.
-
-**Current:** The repository and its documented implementation are available for inspection.
-
-**Next:** Reconcile the README, source behavior, and safe public product language before adding deeper examples or diagrams.
-
-**Future:** Product direction is maintained separately and must not be read as a shipped feature list.
-
-## Contributing and license
-
-Follow the repository's existing contribution and licensing files where present. This README does not invent an open-source license or contribution policy.
-
-## Visual documentation
-
-Image slots are intentionally comments until authentic screenshots, deterministic diagrams, or approved conceptual visuals exist. No absent image file is referenced.
-
-## NOAERTH
-
-[NOAERTH](https://www.noaerth.com) is the venture ecosystem associated with this project.
+Future work should close the storage-encryption integration gap, finish native vault behavior, resolve attachment persistence, and complete tool/retry/edit flows before stronger end-to-end privacy claims are made.
