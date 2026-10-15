@@ -128,7 +128,7 @@ jobs:
       - name: Build web client
         run: pnpm build:client
       - name: Upload web build
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: gh0st-web
           path: apps/client/dist/
@@ -152,7 +152,7 @@ jobs:
       - name: Build CLI
         run: pnpm build:cli
       - name: Upload CLI build
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: gh0st-cli
           path: apps/cli/dist/
@@ -176,7 +176,7 @@ jobs:
       - name: Build site
         run: pnpm build:site
       - name: Upload site build
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: gh0st-site
           path: apps/site/dist/
